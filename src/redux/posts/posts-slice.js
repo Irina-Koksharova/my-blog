@@ -2,14 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import postsOperations from './posts-operation';
 
 const {
-  fetchPosts,
+  getAllPosts,
   createPost,
-  deletePost,
   updatePost,
+  deletePost,
+  getSpecificPosts,
+  createComment
 } = postsOperations;
 
 const initialState = {
-  items: [],
+  allPosts: [],
+  specificPost: {},
   isLoading: false,
   error: null,
 };
@@ -18,16 +21,16 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   extraReducers: {
-    [fetchPosts.pending](state, _) {
+    [getAllPosts.pending](state, _) {
       state.isLoading = true;
       state.error = null;
     },
-    [fetchPosts.fulfilled](state, { payload }) {
-      state.items = payload;
+    [getAllPosts.fulfilled](state, { payload }) {
+      state.allPosts = payload;
       state.isLoading = false;
       state.error = null;
     },
-    [fetchPosts.rejected](state, { payload }) {
+    [getAllPosts.rejected](state, { payload }) {
       state.isLoading = false;
       state.error = payload;
     },
@@ -36,25 +39,11 @@ const postsSlice = createSlice({
       state.error = null;
     },
     [createPost.fulfilled](state, { payload }) {
-      state.items = [...state.items, payload];
+      state.allPosts = [...state.allPosts, payload];
       state.isLoading = false;
       state.error = null;
     },
     [createPost.rejected](state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
-    [deletePost.pending](state, _) {
-      state.isLoading = true;
-      state.error = null;
-    },
-    [deletePost.fulfilled](state, { meta }) {
-      state.items = state.items.filter(({ id }) => id !== meta.arg);
-      state.isSelected = null;
-      state.isLoading = false;
-      state.error = null;
-    },
-    [deletePost.rejected](state, { payload }) {
       state.isLoading = false;
       state.error = payload;
     },
@@ -63,13 +52,67 @@ const postsSlice = createSlice({
       state.error = null;
     },
     [updatePost.fulfilled](state, { payload }) {
-      state.items = state.items.map(item =>
-        item.id === payload.id ? payload : item,
+      state.allPosts = state.allPosts.map(item =>
+        item.id === payload.id
+          ? {
+            ...item,
+            title: payload.title,
+            body: payload.body
+          } : item,
       );
       state.isLoading = false;
       state.error = null;
     },
     [updatePost.rejected](state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    [deletePost.pending](state, _) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [deletePost.fulfilled](state, { meta }) {
+      state.allPosts = state.allPosts.filter(({ id }) => id !== meta.arg);
+      state.isSelected = null;
+      state.isLoading = false;
+      state.error = null;
+    },
+    [deletePost.rejected](state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    [getSpecificPosts.pending](state, _) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [getSpecificPosts.fulfilled](state, { payload }) {
+      state.specificPost = payload;
+      state.isLoading = false;
+      state.error = null;
+    },
+    [getSpecificPosts.rejected](state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    [createComment.pending](state, _) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [createComment.fulfilled](state, { payload }) {
+      state.allPosts = state.allPosts.map(item =>
+        item.id === payload.postId
+          ? item?.comments
+            ? {
+              ...item,
+              comments: [...item.comments, payload],
+            }
+            : { ...item, comments: [payload] }
+          : item
+      );
+      state.isLoading = false;
+      state.error = null;
+    },
+    [createComment.rejected](state, { payload }) {
       state.isLoading = false;
       state.error = payload;
     },

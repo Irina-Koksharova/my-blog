@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const MainSectionStyled = styled.section`
 display: flex;
@@ -17,4 +18,25 @@ justify-content: center;
 align-items: center;
 `;
 
-export { MainSectionStyled, SecondarySectionStyled };
+const LinkStyled = styled(NavLink)`
+ display: inline-block;
+ min-width: 100px;
+ padding: 10px;
+ color: inherit;
+ font-size: 14px;
+ text-align: center;
+ text-transform: capitalize;
+ background-color: rgb(164, 240, 140);
+ border-radius: 5px;
+ cursor: pointer;
+
+ :hover {
+  transform: scale(1.01);
+}
+`;
+
+LinkStyled.defaultProps = {
+    activeClassName: 'active',
+};
+
+export { MainSectionStyled, SecondarySectionStyled, LinkStyled };

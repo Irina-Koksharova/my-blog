@@ -1,26 +1,19 @@
-import { useEffect, Suspense, lazy } from 'react';
-import { useDispatch } from 'react-redux';
+import { Suspense, lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import postsOperations from 'redux/posts/posts-operation';
 import Container from 'components/Container';
 
 const HomePage = lazy(() =>
   import('views/HomePage' /* webpackChunkName: "HomePage" */),
 );
-const PostPage = lazy(() =>
-  import('views/PostPage' /* webpackChunkName: "PostPage" */),
+const PostsPage = lazy(() =>
+  import('views/PostsPage' /* webpackChunkName: "PostPage" */),
+);
+const NewPostPage = lazy(() =>
+  import('views/NewPostPage' /* webpackChunkName: "NewPostPage" */),
 );
 
-
 const App = () => {
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(postsOperations.fetchPosts());
-  }, [dispatch]);
-  
-
+   
   return (
     <Container>
 
@@ -33,7 +26,11 @@ const App = () => {
           </Route>
 
           <Route path="/posts" exact>
-            <PostPage />
+            <PostsPage />
+          </Route>
+
+          <Route path="/posts/new" exact>
+            <NewPostPage />
           </Route>
 
         </Switch>

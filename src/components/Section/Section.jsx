@@ -1,20 +1,33 @@
-import { MainSectionStyled, SecondarySectionStyled } from './Section.styled';
+import { useLocation } from 'react-router-dom';
+import {
+    MainSectionStyled,
+    SecondarySectionStyled,
+    LinkStyled
+} from './Section.styled';
 import Image from 'components/Image';
 import Title from 'components/Title';
-import Button from 'components/Button';
 
-const Section = ({image, alt, title, onClick, children, ariaLabel}) => {
+const Section = ({ image, alt, title, children, url }) => {
+    const location = useLocation();
   
     return (
         <MainSectionStyled>
             <Image image={image} alt={alt} />
             <SecondarySectionStyled>
                 <Title style={{marginBottom: '20px', fontSize: '18px'}} title={title} />
-                <Button
-                    onClick={onClick}
-                    children={children}
-                    aria-label={ariaLabel}>
-                </Button>
+                <LinkStyled
+                    to={{
+                        pathname: `${url}`,
+                        state: {
+                            from: {
+                                location,
+                            },
+                        },
+                    }}
+                    exact
+                >
+                    {children}
+                </LinkStyled>
             </SecondarySectionStyled>
         </MainSectionStyled>
     )

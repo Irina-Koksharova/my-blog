@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 axios.defaults.baseURL = 'https://bloggy-api.herokuapp.com';
 
-const fetchPosts = createAsyncThunk(
+const getAllPosts = createAsyncThunk(
   'posts/fetchPosts',
   async (_, { rejectWithValue }) => {
     try {
@@ -27,28 +27,16 @@ const createPost = createAsyncThunk(
   },
 );
 
-const deletePost = createAsyncThunk(
-  'posts/deletePost',
-  async (postId, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.delete(`/contacts/${postId}`);
-      return data;
-    } catch ({ response }) {
-      return rejectWithValue(response.status);
-    }
-  },
-);
-
 const updatePost = createAsyncThunk(
   'posts/updatePost',
   async (data, thunkAPI) => {
-    const { id, name, number } = data;
-    const update = { name, number };
+    const { id, title, body } = data;
+    const update = { title, body };
     if (!update) {
       return;
     }
     try {
-      const action = await axios.put(`/contacts/${id}`, update);
+      const action = await axios.put(`/posts/${id}`, update);
       return action.data;
     } catch ({ response }) {
       return thunkAPI.rejectWithValue(response.status);
@@ -56,11 +44,49 @@ const updatePost = createAsyncThunk(
   },
 );
 
+const deletePost = createAsyncThunk(
+  'posts/deletePost',
+  async (postId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(`/posts/${postId}`);
+      return data;
+    } catch ({ response }) {
+      return rejectWithValue(response.status);
+    }
+  },
+);
+
+const getSpecificPosts = createAsyncThunk(
+  'posts/getSpecificPosts',
+  async (id, thunkAPI) => {
+    try {
+      const action = await axios.get(`/posts/${id}?_embed=comments`);
+      return action.data;
+    } catch ({ response }) {
+      return thunkAPI.rejectWithValue(response.status);
+    }
+  },
+);
+
+const createComment = createAsyncThunk(
+  'comments/createComment',
+  async (newComment, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/comments', newComment);
+      return data;
+    } catch ({ response }) {
+      return rejectWithValue(response.status);
+    }
+  },
+);
+
 const postsOperations = {
-  fetchPosts,
+  getAllPosts,
   createPost,
-  deletePost,
   updatePost,
+  deletePost,
+  getSpecificPosts,
+  createComment
 };
 
 export default postsOperations;
