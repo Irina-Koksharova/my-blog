@@ -6,7 +6,6 @@ import { OverlayStyled, ModalStyled } from './Modal.styled';
 const modalRoot = document.querySelector('#root-modal');
 
 const Modal = ({ children, onClose }) => {
-
   useEffect(() => {
     const handleKeyDown = e => {
       if (e.code === 'Escape') {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -16,7 +17,6 @@ const CommentCard = ({ postId, onClose }) => {
         reset,
         formState: { isSubmitSuccessful },
     } = useForm();
-    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -51,5 +51,10 @@ const CommentCard = ({ postId, onClose }) => {
         </FormStyled>
     )
 }
+
+CommentCard.propTypes = {
+    postId: PropTypes.number.isRequired,
+    onClick: PropTypes.func,
+};
 
 export default CommentCard;

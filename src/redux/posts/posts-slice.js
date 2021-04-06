@@ -6,7 +6,7 @@ const {
   createPost,
   updatePost,
   deletePost,
-  getSpecificPosts,
+  getSpecificPost,
   createComment
 } = postsOperations;
 
@@ -81,16 +81,16 @@ const postsSlice = createSlice({
       state.isLoading = false;
       state.error = payload;
     },
-    [getSpecificPosts.pending](state, _) {
+    [getSpecificPost.pending](state, _) {
       state.isLoading = true;
       state.error = null;
     },
-    [getSpecificPosts.fulfilled](state, { payload }) {
+    [getSpecificPost.fulfilled](state, { payload }) {
       state.specificPost = payload;
       state.isLoading = false;
       state.error = null;
     },
-    [getSpecificPosts.rejected](state, { payload }) {
+    [getSpecificPost.rejected](state, { payload }) {
       state.isLoading = false;
       state.error = payload;
     },

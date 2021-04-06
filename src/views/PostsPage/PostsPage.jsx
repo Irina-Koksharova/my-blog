@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ListStyled } from './PostsPage.styled';
 import postsSelectors from 'redux/posts/posts-selectors';
 import postsOperations from 'redux/posts/posts-operation';
+import URL from 'initial/url';
 import Title from 'components/Title';
 import PostItem from 'components/PostItem';
 import Button from 'components/Button';
@@ -18,7 +19,7 @@ const PostsPage = () => {
     }, [dispatch])
 
     const onButtonGoBackClick = () => {
-        history.push('/')
+        history.push(URL.HOME)
     }
 
     return (

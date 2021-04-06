@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom';
+import URL from 'initial/url';
 import Title from 'components/Title';
 import PostCard from 'components/PostCard';
 import Button from 'components/Button';
@@ -7,7 +8,7 @@ const NewPostPage = () => {
     const history = useHistory();
 
     const onButtonGoBackClick = () => {
-        history.push('/posts')
+        history.push(URL.POSTS)
     }
 
     return (

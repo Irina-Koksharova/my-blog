@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -7,7 +8,7 @@ import {
 } from './PostItem.styled';
 import postsSelectors from 'redux/posts/posts-selectors';
 import postsOperations from 'redux/posts/posts-operation';
-import Button from 'components/Button';
+import ButtonList from 'components/ButtonList';
 import Modal from 'components/Modal';
 import PostCard from 'components/PostCard';
 import CommentCard from 'components/CommentCard';
@@ -24,10 +25,10 @@ const PostItem = ({ id, title, body }) => {
     const dispatch = useDispatch();
 
     const onShowComments = id => {
-        const showPost = posts.find(post => post.id === id)
-        if (showPost) {
-            dispatch(postsOperations.getSpecificPosts(id));
-            setIsCommented(showPost)
+        const targetPost = posts.find(post => post.id === id)
+        if (targetPost) {
+            dispatch(postsOperations.getSpecificPost(id));
+            setIsCommented(targetPost)
         }
     };
 
@@ -41,7 +42,7 @@ const PostItem = ({ id, title, body }) => {
         setIsOpen(!isOpen)
         const targetPost = posts.find(post => post.id === id)
         setSelectedPost(targetPost)
-  };
+    };
 
     const onDelete = id => {
         dispatch(postsOperations.deletePost(id));
@@ -51,25 +52,11 @@ const PostItem = ({ id, title, body }) => {
         <PostContainerStyled>
             <PostTitleStyled>{title}</PostTitleStyled>
             <PostTextStyled>{body}</PostTextStyled>
-            <Button
-                onClick={() => onShowComments(id)}
-                children='Read comments'
-                aria-label='Read comments'
-            />
-            <Button
-                onClick={() => onAddComments(id)}
-                children='Add comment'
-                aria-label='Add comment'
-            />
-            <Button
-                onClick={() => onEdit(id)}
-                children='Edit post'
-                aria-label='Edit'
-            />
-            <Button
-                onClick={() => onDelete(id)}
-                children='Delete post'
-                aria-label='Delete'
+            <ButtonList
+                onShow={() => onShowComments(id)}
+                onAdd={() => onAddComments(id)}
+                onEdit={() => onEdit(id)}
+                onDelete={() => onDelete(id)}
             />
             {isOpen &&
                 <Modal onClose={() => {setIsOpen(!isOpen)}}>
@@ -94,5 +81,11 @@ const PostItem = ({ id, title, body }) => {
         </PostContainerStyled>
     )
 }
+
+PostItem.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+};
 
 export default PostItem;

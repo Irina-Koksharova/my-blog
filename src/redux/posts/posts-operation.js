@@ -4,7 +4,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 axios.defaults.baseURL = 'https://bloggy-api.herokuapp.com';
 
 const getAllPosts = createAsyncThunk(
-  'posts/fetchPosts',
+  'posts/getAllPosts',
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get('/posts');
@@ -56,8 +56,8 @@ const deletePost = createAsyncThunk(
   },
 );
 
-const getSpecificPosts = createAsyncThunk(
-  'posts/getSpecificPosts',
+const getSpecificPost = createAsyncThunk(
+  'posts/getSpecificPost',
   async (id, thunkAPI) => {
     try {
       const action = await axios.get(`/posts/${id}?_embed=comments`);
@@ -85,7 +85,7 @@ const postsOperations = {
   createPost,
   updatePost,
   deletePost,
-  getSpecificPosts,
+  getSpecificPost,
   createComment
 };
 

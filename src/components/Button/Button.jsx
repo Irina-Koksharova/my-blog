@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import {ButtonStyled} from './Button.styled';
+import { ButtonStyled } from './Button.styled';
 
 const Button = ({ onClick, children, ...allyProps }) => {
-  
   return (
     <ButtonStyled
       type="submit"

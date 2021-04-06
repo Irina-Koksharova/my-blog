@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
     ContainertStyled,
     Titletyled,
@@ -9,7 +10,8 @@ import {
 import Title from 'components/Title';
 
 const SpecificPostCard = ({ post }) => {
-                
+    const { title, body, comments } = post
+
     return (
         <>
             <Title
@@ -18,19 +20,24 @@ const SpecificPostCard = ({ post }) => {
             />
             <ContainertStyled>
                 <Titletyled>Post</Titletyled>
-                <SubTitletyled>{post.title}</SubTitletyled>
-                <PostTextStyled>{post.body}</PostTextStyled>
-                {post.comments && (
+                <SubTitletyled>{title}</SubTitletyled>
+                <PostTextStyled>{body}</PostTextStyled>
+                {comments && (
                     <>
-                    <Titletyled>Comments</Titletyled>
-                    <ListStyled>
-                        {post.comments.map(comment =>
-                            (<ListItemStyled key={comment.id}>{comment.body}</ListItemStyled>))}
-                    </ListStyled></>
+                        <Titletyled>Comments</Titletyled>
+                        <ListStyled>
+                            {comments.map(({ id, body }) =>
+                                (<ListItemStyled key={id}>{body}</ListItemStyled>))}
+                        </ListStyled>
+                    </>
                 )}
             </ContainertStyled>
         </>
     )
 }
+    
+SpecificPostCard.propTypes = {
+    post: PropTypes.object.isRequired
+};
 
 export default SpecificPostCard;

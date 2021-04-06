@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -76,5 +77,10 @@ const PostCard = ({ selected = null, onClose }) => {
         </FormStyled>
     )
 }
+
+PostCard.propTypes = {
+  selected: PropTypes.object,
+  onClose: PropTypes.func,
+};
 
 export default PostCard;
